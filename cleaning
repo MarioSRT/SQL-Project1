@@ -1,0 +1,56 @@
+SELECT * FROM `my-project-1738-344716.CovidVaccinations.CovidVaccinations` order by 3,4 
+SELECT * FROM `my-project-1738-344716.CovidDeaths.CovidDeaths` order by 3,4 
+
+#SELECT DATA THAT WILL BE USED
+
+SELECT Location, date, total_cases, new_cases, total_deaths, population
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+ORDER BY 1,2
+
+#LOOKING AT TOTAL CASES VS. TOTAL DEATH
+
+SELECT Location, date, total_cases, total_deaths, (total_deaths/total_cases)*100 as Deathpercentage
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+ORDER BY 1,2
+
+#TOTAL CASES VS POPULATION
+#Shows what percentage of population got COVID
+SELECT Location, date, total_cases, Population, (total_deaths/population)*100 as PopulationDeathPercentage
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+ORDER BY 1,2
+
+#Looking at Countries with Highest Infection Rate compared to Population
+SELECT Location, Population, MAX(total_cases) as HighestInfectionCount, Max((total_deaths/population))*100 as PercentPoulationInfected
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+GROUP BY Location, Population
+ORDER BY PercentPoulationInfected desc
+
+#Countries with highest Death Count per Population
+SELECT Location, MAX(Total_deaths) as TotalDeathCount
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+WHERE continent is not null
+GROUP BY Location
+ORDER BY TotalDeathCount desc
+
+#Continents Death Count
+SELECT continent, MAX(cast(Total_deaths as int)) as TotalDeathCount
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+WHERE continent is not null
+GROUP BY continent
+ORDER BY TotalDeathCount desc
+
+#GLOBAL NUMBERS
+SELECT date, SUM(new_cases) as total_cases, SUM(cast(new_deaths as int)) as total_deaths, SUM(cast(new_deaths as int))/SUM(New_Cases)*100 as Deathpercentage
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths
+WHERE continent is not null 
+GROUP BY date
+ORDER BY 1,2
+
+#Total Population vs Vaccintati
+
+SELECT *
+FROM my-project-1738-344716.CovidDeaths.CovidDeaths dea 
+JOIN my-project-1738-344716.CovidVaccinations.CovidVaccinations vac
+ ON dea.location = vac.location
+ and dea.date = vac.date
+ 
