@@ -46,11 +46,4 @@ WHERE continent is not null
 GROUP BY date
 ORDER BY 1,2
 
-#Total Population vs Vaccintati
-
-SELECT *
-FROM my-project-1738-344716.CovidDeaths.CovidDeaths dea 
-JOIN my-project-1738-344716.CovidVaccinations.CovidVaccinations vac
- ON dea.location = vac.location
- and dea.date = vac.date
  
